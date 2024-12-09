@@ -12,11 +12,31 @@ function welcomeToGame(gameName, userName) {
     alert(`Hello ${userName}, Let's play ${gameName}`);
 }
 
+function getBadge(percentOfWins) {
+    let result = "";
+    switch (true) {
+        case (percentOfWins >= 0 && percentOfWins <= 0.25):
+            return { badge: "Stone", style: 'badge-stone' };
+        case (percentOfWins >= 0.26 && percentOfWins <= 0.5):
+            return { badge: "Bronze", style: 'badge-bronze' };
+        case (percentOfWins >= 0.51 && percentOfWins <= 0.75):
+            return { badge: "Iron", style: 'badge-iron' };
+        case (percentOfWins >= 0.76 && percentOfWins <= 1):
+            return { badge: "Silicon", style: 'badge-silicon' };
+        default:
+            return { badge: "No Badge", style: '' };
+    }
+
+    return result;
+}
+
 
 function farewell(username) {
     document.getElementById("farewell-section").style = "display: block";
     document.getElementById("farewell-msg").innerHTML = `Good bye and thank you, ${username}`;
 
+    let percentOfWins = numberOfWin / totalGamePlayed;
+    let badgeInfo = getBadge(percentOfWins);
     let stats =
         `
             <table>
@@ -28,8 +48,11 @@ function farewell(username) {
                 <tr>
                     <td id="total-game-played-data">${totalGamePlayed}</td>
                     <td id="number-of-wins-data">${numberOfWin}</td>
-                    <td id="average-percent-of-wins-data">${((numberOfWin / totalGamePlayed) * 100)}%</td>
+                    <td id="average-percent-of-wins-data">${(percentOfWins * 100)}%</td>
                 </tr>
+                <div class="badge">
+                    <div class=${badgeInfo.style}>${badgeInfo.badge}</div>
+                </div>
             </table>
     `
     document.getElementById("stats-div").innerHTML = stats;
